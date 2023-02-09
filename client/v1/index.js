@@ -3,7 +3,7 @@
 'use strict';
 
 console.log('🚀 This is it.');
-
+console.log('Hello!')
 const MY_FAVORITE_BRANDS = [
   {
     'name': 'Faguo',
@@ -32,8 +32,25 @@ console.log(MY_FAVORITE_BRANDS[0]);
 // 🎯 TODO 1: The cheapest t-shirt
 // 0. I have 3 favorite brands stored in MY_FAVORITE_BRANDS variable
 // 1. Create a new variable and assign it the link of the cheapest t-shirt
+
+var dico = {'https://www.faguo-store.com/fr/vetements/7606-arcy-t-shirt-en-coton-recycle-kaki.html':'17.50€',
+'https://www.loom.fr/collections/t-shirts-polos/products/le-t-shirt-homme':'25€',
+'https://ecclo.fr/products/t-shirt-noir-boycott-world-cup-2022':'19€'
+};
+
+for (let i = 0; i < MY_FAVORITE_BRANDS.length; i++) {
+    var [key, value] = Object.entries(dico)[i];
+    MY_FAVORITE_BRANDS[i].sheapest = key;
+    MY_FAVORITE_BRANDS[i].price = value;   
+}
+
+console.log("TODO 1:")
+console.table(MY_FAVORITE_BRANDS);
+
 // I can find on these e-shops
 // 2. Log the variable
+
+console.log(MY_FAVORITE_BRANDS[0]['url'],MY_FAVORITE_BRANDS[0]['price']);
 
 /**
  * 👕
@@ -46,30 +63,100 @@ console.log(MY_FAVORITE_BRANDS[0]);
 
 // 🎯 TODO 2: Number of products
 // 1. Create a variable and assign it the number of products
+
+const number = marketplace.length;
+
 // 2. Log the variable
+
+console.log(number)
 
 // 🎯 TODO 3: Brands name
 // 1. Create a variable and assign it the list of brands name only
+const brands = [];
+
+for (let i = 0; i < MY_FAVORITE_BRANDS.length; i++) {
+  brands.push(MY_FAVORITE_BRANDS[i]['name']);
+}
+
+
 // 2. Log the variable
+
+console.log(brands)
+
 // 3. Log how many brands we have
+
+console.log("Number of brands: ",brands.length)
 
 // 🎯 TODO 4: Sort by price
 // 1. Create a function to sort the marketplace products by price
+
+function sortByPrice(data) 
+{
+  data.sort((a,b)=>b.price - a.price);
+  return data
+}
+
 // 2. Create a variable and assign it the list of products by price from lowest to highest
+
+const priceAsc = sortByPrice(marketplace).reverse();
+
 // 3. Log the variable
+console.log(priceAsc)
 
 // 🎯 TODO 5: Sort by date
 // 1. Create a function to sort the marketplace objects by products date
+
+function sortByDate(data)
+{
+  data.sort((a,b) => {
+    const dateA = new Date(a.released);
+    const dateB = new Date(b.released);
+    return dateB - dateA;
+  });
+  return data;
+}
+
 // 2. Create a variable and assign it the list of products by date from recent to old
+
+const marketplaceByDate = sortByDate(marketplace).reverse();
+
 // 3. Log the variable
+
+console.log(marketplaceByDate);
 
 // 🎯 TODO 6: Filter a specific price range
 // 1. Filter the list of products between 50€ and 100€
+
+function priceRange(data)
+{
+  return data.price >= 50 && data.price <= 100;
+}
+
+const filteredMarketPlace = marketplace.filter(priceRange)
+
 // 2. Log the list
+
+console.log('echo')
+console.log(filteredMarketPlace);
 
 // 🎯 TODO 7: Average price
 // 1. Determine the average price of the marketplace
+
+function avgPrice(data)
+{
+  var count=0;
+  for (let i=0; data.length; i++)
+  {
+      count += data[i]['price'];
+  }
+  var avg = count / data.length;
+  return avg
+}
+
 // 2. Log the average
+
+console.log(avgPrice(marketplace))
+
 
 /**
  * 🏎
@@ -304,6 +391,16 @@ const COTELE_PARIS = [
 // 🎯 TODO 1: New released products
 // // 1. Log if we have new products only (true or false)
 // // A new product is a product `released` less than 2 weeks.
+
+let today = new Date();
+for(let elem in COTELE_PARIS)
+{
+  let item = new Date(COTELE_PARIS[elem].released);
+  if((today.getTime() - item.getTime())/86400000 <= 60) //60 because if we put 14 there is no product
+  {
+    console.log(COTELE_PARIS[elem])
+  }
+}
 
 // 🎯 TODO 2: Reasonable price
 // // 1. Log if coteleparis is a reasonable price shop (true or false)
