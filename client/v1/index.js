@@ -24,7 +24,7 @@ console.log(MY_FAVORITE_BRANDS[0]);
 
 /**
  * 🌱
- * Let's go with a very very simple first todo
+ * Let's go with a very very simple first todo !
  * Keep pushing
  * 🌱
  */
