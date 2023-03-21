@@ -21,9 +21,18 @@ async function writeFile(products,nameFile){
 }
 
 
-async function mongoDB(){
-  
+async function mongoDB(products, eshop){
+  const {MongoClient} = require('mongodb');
+  const MONGODB_URI = 'mongodb+srv://ringuetluca:mdpmdpmdp@Cluster0.nxupqlp.mongodb.net/test';
+  const MONGODB_DB_NAME = 'Cluster0';
+  // Connecting to the MongoDB database and inserting the sample data
+  const client = await MongoClient.connect(MONGODB_URI, {'useNewUrlParser': true});
+  const db =  client.db(MONGODB_DB_NAME)
+  const collection = db.collection(eshop) //create a database in the clearfashion collection
+  const result = await collection.insertMany(products);
+  console.log(`${result.insertedCount} documents were inserted into the ${eshop} database`);
 }
+
 
 async function sandbox(eshop) {
   try {
@@ -31,8 +40,10 @@ async function sandbox(eshop) {
 
     let products;
     let json_name;
+    let big_json = 'big_json';
     if (eshop === 'https://www.dedicatedbrand.com/en/men/news') {
-      products = await dedicatedbrand.scrape(eshop);
+      const pageCount = 17; // or whatever the total number of pages is
+      products = await dedicatedbrand.scrapeAll(eshop, pageCount);
       json_name = "dedicated";
     } else if (eshop === 'https://www.montlimart.com/99-vetements') {
       products = await montlimart.scrape(eshop);
@@ -48,6 +59,13 @@ async function sandbox(eshop) {
     console.log('done for scrapping');
     writeFile(products, json_name)
     console.log('done for json');
+    writeFile(products,big_json)
+    console.log('done for the BIG json')
+    mongoDB(products, json_name);
+    console.log('done for mongoDB for ', json_name)
+    mongoDB(products, 'general');
+    console.log('done for mongoDB for the general database')
+    process.exit(0);
   } 
   catch (e) {
     console.error(e);

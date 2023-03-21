@@ -8,7 +8,6 @@ const cheerio = require('cheerio');
  */
 const parse = data => {
   const $ = cheerio.load(data);
-
   return $('.productList-container .productList')
     .map((i, element) => {
       const name = $(element)
@@ -37,7 +36,7 @@ const parse = data => {
  * @param  {[type]}  url
  * @return {Array|null}
  */
-module.exports.scrape = async url => {
+const scrape = async url => {
   try {
     const response = await fetch(url);
 
@@ -54,4 +53,26 @@ module.exports.scrape = async url => {
     console.error(error);
     return null;
   }
+};
+
+
+/**
+ * Scrape all the products across all pages
+ * @param  {[type]}  baseUrl
+ * @param  {[type]}  pageCount
+ * @return {Array}
+ */
+module.exports.scrapeAll = async (baseUrl, pageCount) => {
+  let products = [];
+
+  for (let i = 1; i <= pageCount; i++) {
+    const url = `${baseUrl}&page=${i}`;
+    const pageProducts = await scrape(baseUrl);
+
+    if (pageProducts) {
+      products = [...products, ...pageProducts];
+    }
+  }
+
+  return products;
 };
