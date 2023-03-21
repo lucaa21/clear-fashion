@@ -11,6 +11,7 @@ const parse = data => {
 
   return $('.products-list .products-list__block* ')
     .map((i, element) => {
+      const brand = 'montlimart';
       const name = $(element)
         .find('.text-reset')
         .text()
@@ -27,7 +28,7 @@ const parse = data => {
           .text()
       );
       
-      return {name, price, color};
+      return {brand, name, price, color};
     })
     .get();
 };

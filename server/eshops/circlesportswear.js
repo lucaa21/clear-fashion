@@ -11,6 +11,7 @@ const parse = data => {
 
   return $('.product-grid-container .grid__item')
     .map((i, element) => {
+      const brand = 'circlesportswear';
       var name = $(element)
         .find('.full-unstyled-link')
         .text()
@@ -27,7 +28,7 @@ const parse = data => {
           .find('.money')
           .text();
       price = price.slice(0,price.length /2);
-      return {name, price, caracteristique};
+      return {brand, name, price, caracteristique};
     })
     .get();
 };
