@@ -33,8 +33,8 @@ app.get('/products/search', async (request, response) => {
   try{
     const client = getClient();
     const collection = client.db("Cluster0").collection("general");
-    const brandName = request.query.brand;
-	  const priceRoof = request.query.price;
+    const brand = request.query.brand;
+	  const price = request.query.price;
 	  var limPage = request.query.limit;
 
     var script = {};
@@ -44,11 +44,11 @@ app.get('/products/search', async (request, response) => {
     } else {
       limPage = parseInt(limPage);
     }
-    if (brandName !== undefined) {
-      script.brand = brandName;
+    if (brand !== undefined) {
+      script.brand = brand;
     }
-    if (priceRoof !== undefined) {
-      script.price = {$lte: parseInt(priceRoof)};
+    if (price !== undefined) {
+      script.price = {$lte: parseInt(price)};
     }
     const found = await collection.find(script).toArray();
     const metadata = {currentPage: 1,
