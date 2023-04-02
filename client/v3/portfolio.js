@@ -33,8 +33,7 @@ const sectionFavoriteProducts = document.querySelector('#favoriteProducts');
 
 const fetchProducts = async (show=12, page=1, brand="",price="") => {
   try {
-    //let url = 'https://vercel.com/lucaa21/clear-fashion-co93/BBUA82Q3NiWBZC7xoLsj7apQmrtr'
-    let url = `http://localhost:8092/products/search?page=${page}&limit=${show}&brand=${brand}&price=${price}`;
+    let url = `https://clear-fashion-btfo.vercel.app/products/search?page=${page}&limit=${show}&brand=${brand}&price=${price}`;
     console.log(url);
     const response = await fetch(url);
     const body = await response.json();
@@ -58,7 +57,7 @@ const fetchProducts = async (show=12, page=1, brand="",price="") => {
 const fetchAllProducts = async () => {
   try {
     const response = await fetch(
-      `http://localhost:8092/products/search`
+      `https://clear-fashion-btfo.vercel.app/products/search`
     );
     const body = await response.json();
     return body;
@@ -71,7 +70,7 @@ const fetchAllProducts = async () => {
 const fetchBrands = async () => {
   try {
     const response = await fetch(
-      `http://localhost:8092/brands`
+      `https://clear-fashion-btfo.vercel.app/brands`
     );
     const body = await response.json();
     return body;
@@ -84,8 +83,7 @@ const fetchBrands = async () => {
 const fetchSortProducts = async (sort=-1) => {
   try {
     const response = await fetch(
-      `https://clear-fashion-api-jaoudet.vercel.app/sort?sort=${sort}`
-      ///`http://localhost:8092/sort?sort=${sort}`
+      `https://clear-fashion-btfo.vercel.app/sort?sort=${sort}`
     );
     const body = await response.json();
     return body;
