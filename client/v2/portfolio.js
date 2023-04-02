@@ -26,6 +26,8 @@ const selectPrice = document.querySelector('#price-select');
 const selectRecently = document.querySelector('#recently-select');
 const selectSort = document.querySelector('#sort-select');
 
+
+
 /**
  * Set global value
  * @param {Array} result - products to display
