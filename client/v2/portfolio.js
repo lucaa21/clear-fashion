@@ -4,16 +4,11 @@
 /*
 Description of the available api
 GET https://clear-fashion-api.vercel.app/
-
 Search for specific products
-
 This endpoint accepts the following optional query string parameters:
-
 - `page` - page of products to return
 - `size` - number of products to return
-
 GET https://clear-fashion-api.vercel.app/brands
-
 Search for available brands list
 */
 
@@ -27,6 +22,9 @@ const selectPage = document.querySelector('#page-select');
 const sectionProducts = document.querySelector('#products');
 const spanNbProducts = document.querySelector('#nbProducts');
 const selectBrand = document.querySelector('#brand-select');
+const selectPrice = document.querySelector('#price-select');
+const selectRecently = document.querySelector('#recently-select');
+const selectSort = document.querySelector('#sort-select');
 
 /**
  * Set global value
@@ -133,15 +131,9 @@ selectShow.addEventListener('change', async (event) => {
   render(currentProducts, currentPagination);
 });
 
-document.addEventListener('DOMContentLoaded', async () => {
-  const products = await fetchProducts();
-
-  setCurrentProducts(products);
-  render(currentProducts, currentPagination);
-});
-
-
-// For the feature 1
+/**
+ * Select the page of products to display
+ */
 selectPage.addEventListener('change', async (event) => {
   const products = await fetchProducts(parseInt(event.target.value),currentPagination.pageSize);
 
@@ -149,9 +141,127 @@ selectPage.addEventListener('change', async (event) => {
   render(currentProducts, currentPagination);
 });
 
-// For the feature 2
-selectBrands.addEventListener('change', async (event) => {
-  const products = await fetchProducts(currentPagination.currentPage, parseInt(event.target.value));
+/**
+ * Select the brand of products to display
+ */
+selectBrand.addEventListener('change', async (event) => {
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  var marque = event.target.value;
+  let listeOfPdts=[];
+  for(let i = 0;i<currentPagination.pageSize;i++){ //Create a list of price
+    if(marque!='all'){
+      if(products['result'][i]['brand']==marque){
+        listeOfPdts.push(products['result'][i]);
+      }
+    }
+    else{
+      listeOfPdts.push(products['result'][i]);
+    }
+  }
+  products['result']=listeOfPdts;
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Select the price of products to display
+ */
+selectPrice.addEventListener('change', async (event) => {
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  var price = event.target.value;
+  console.log(products)
+  let listeOfPdts=[];
+  for(let i = 0;i<currentPagination.pageSize;i++){ //Create a list of price
+    if(price!='all'){
+      if(products['result'][i]['price']<=price){
+        listeOfPdts.push(products['result'][i]);
+      }
+    }
+    else{
+      listeOfPdts.push(products['result'][i]);
+    }
+  }
+  products['result']=listeOfPdts;
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Select the released date of products to display
+ */
+selectRecently.addEventListener('change', async (event) => {
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  var today = new Date();
+  console.log(products)
+  let difference;
+  let TotalDays;
+  let dayReleased;
+  let newReleased = event.target.value;
+
+  console.log(`Affichage des produits dont la date de sortie est inférieure à ${newReleased} jours:`);
+  let listeOfPdts=[];
+  for(let i=0;i<currentPagination.pageSize;i++){
+    dayReleased = new Date(products['result'][i]['released']);
+    let difference = today.getTime() - dayReleased.getTime();
+    let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
+    if(TotalDays<newReleased){
+      listeOfPdts.push(products['result'][i]);
+    }
+  }
+
+  products['result']=listeOfPdts;
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+/**
+ * Select the sort to display
+ */
+selectSort.addEventListener('change', async (event) => {
+  const products = await fetchProducts(currentPagination.currentPage, currentPagination.pageSize);
+  var sortType = event.target.value;
+  let listeOfPdts=[];
+
+  if(sortType!='none'){
+    let tempDict = products['result'];
+
+    if(sortType=='price-asc'){
+      listeOfPdts = tempDict.sort(function(first, second) {
+        return first['price'] - second['price'];
+      });
+    }
+    else if(sortType=='price-desc'){
+      listeOfPdts = tempDict.sort(function(first, second) {
+        return second['price'] - first['price'];
+      });
+    }
+    else if(sortType=='date-asc'){
+      listeOfPdts = tempDict.sort(function(first, second) {
+        return first['released'] - second['released'];
+      });
+    }
+    else if(sortType=='date-desc'){
+      listeOfPdts = tempDict.sort(function(first, second) {
+        return second['released'] - first['released'];
+      });
+    }
+
+  }
+  else{
+    listeOfPdts = products['result'];
+  }
+  
+  products['result']=listeOfPdts;
+
+  setCurrentProducts(products);
+  render(currentProducts, currentPagination);
+});
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const products = await fetchProducts();
 
   setCurrentProducts(products);
   render(currentProducts, currentPagination);

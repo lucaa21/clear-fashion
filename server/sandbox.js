@@ -55,15 +55,15 @@ async function sandbox(eshop) {
       throw new Error('Unsupported website!');
     }
 
-    console.log(products);
+    //console.log(products);
     console.log('done for scrapping');
     writeFile(products, json_name)
     console.log('done for json');
     writeFile(products,big_json)
     console.log('done for the BIG json')
-    mongoDB(products, json_name);
+    await mongoDB(products, json_name);
     console.log('done for mongoDB for ', json_name)
-    mongoDB(products, 'general');
+    await mongoDB(products, 'general');
     console.log('done for mongoDB for the general database')
     process.exit(0);
   } 
