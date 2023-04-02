@@ -9,7 +9,7 @@ const fs = require('fs');
 const { Console } = require('console');
 
 function getClient() {
-  const uri = "mongodb+srv://tatouti:MongoDB6@clusterclearfashion.iyacjoa.mongodb.net/test?retryWrites=true&w=majority";
+  const uri = "mongodb+srv://ringuetluca:mdpmdpmdp@cluster0.nxupqlp.mongodb.net/test?retryWrites=true&w=majority";
   const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
   return client;
 }
@@ -31,7 +31,7 @@ app.get('/', (request, response) => {
 app.get('/brands', async (request, response) => {
   try{
     const client = getClient();
-    const collection = client.db("ClusterClearFashion").collection("GENERAL");
+    const collection = client.db("Cluster0").collection("general");
     const found = await collection.distinct('brand');
     //response.send({brands: found});
     response.json(found);
@@ -43,7 +43,7 @@ app.get('/brands', async (request, response) => {
 
 app.get('/products', async (request, response) => {
   const client = getClient();
-  const collection = client.db("ClusterClearFashion").collection("GENERAL");
+  const collection = client.db("Cluster0").collection("general");
 
   const result = await collection.find({}).toArray();
 
@@ -52,7 +52,7 @@ app.get('/products', async (request, response) => {
 
 app.get('/sort', async (request, response) => {
   const client = getClient();
-  const collection = client.db("ClusterClearFashion").collection("GENERAL");
+  const collection = client.db("Cluster0").collection("general");
   var sortVal = request.query.sort;
 
   const sortType ={};
@@ -74,7 +74,7 @@ app.get('/sort', async (request, response) => {
 app.get('/products/search', async (request, response) => {
   try{
     const client = getClient();
-    const collection = client.db("ClusterClearFashion").collection("GENERAL");
+    const collection = client.db("Cluster0").collection("general");
 
     var script ={};
     var page = request.query.page;
@@ -127,7 +127,7 @@ app.get('/products/id', async (request, response) => {
     const productId = request.params.id;
     const script = {_id: ObjectId(productId)};
     const client = getClient();
-    const collection = client.db("ClusterClearFashion").collection("GENERAL");
+    const collection = client.db("Cluster0").collection("general");
     const found = await collection.find(script).toArray();
     
     response.send({ids: found});
