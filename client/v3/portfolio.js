@@ -130,7 +130,7 @@ const renderSearchProducts = products => {
       return `
       <div class="product" id=${product._id}>
         <span>${product.brand}</span>
-        <a href="${product.link}" target="_blank">${product.name}</a>
+        <a href="${product.name}" target="_blank">}</a>
         <span>${product.price}€</span>
         <span>${product.caracteristique}</span>
         <button onclick="changeFavorite('${product._id}')">${textFavorite(product._id)}</button>
@@ -148,7 +148,7 @@ const renderFavoriteProducts = products => {
       return `
       <div class="product" id=${product._id}>
         <span>${product.brand}</span>
-        <a href="${product.link}" target="_blank">${product.name}</a>
+        <a href="${product.name}" target="_blank"></a>
         <span>${product.price}€</span>
         <span>${product.caracteristique}</span>
         <button onclick="changeFavorite('${product._id}')">${textFavorite(product._id)}</button>
