@@ -33,7 +33,8 @@ const sectionFavoriteProducts = document.querySelector('#favoriteProducts');
 
 const fetchProducts = async (show=12, page=1, brand="",price="") => {
   try {
-    let url = `https://clear-fashion-btfo.vercel.app/products/search?page=${page}&limit=${show}&brand=${brand}&price=${price}`;
+    let url = `https://clear-fashion-api-jaoudet.vercel.app/products/search?page=${page}&limit=${show}&brand=${brand}&price=${price}`;
+    ///let url = `http://localhost:8092/products/search?page=${page}&limit=${show}&brand=${brand}&price=${price}`;
     console.log(url);
     const response = await fetch(url);
     const body = await response.json();
@@ -57,7 +58,8 @@ const fetchProducts = async (show=12, page=1, brand="",price="") => {
 const fetchAllProducts = async () => {
   try {
     const response = await fetch(
-      `https://clear-fashion-btfo.vercel.app/products/search`
+      'https://clear-fashion-api-jaoudet.vercel.app/products'
+      ///`http://localhost:8092/products`
     );
     const body = await response.json();
     return body;
@@ -70,7 +72,8 @@ const fetchAllProducts = async () => {
 const fetchBrands = async () => {
   try {
     const response = await fetch(
-      `https://clear-fashion-btfo.vercel.app/brands`
+      'https://clear-fashion-api-jaoudet.vercel.app/brands'
+      //`http://localhost:8092/brands`
     );
     const body = await response.json();
     return body;
@@ -83,7 +86,8 @@ const fetchBrands = async () => {
 const fetchSortProducts = async (sort=-1) => {
   try {
     const response = await fetch(
-      `https://clear-fashion-btfo.vercel.app/sort?sort=${sort}`
+      `https://clear-fashion-api-jaoudet.vercel.app/sort?sort=${sort}`
+      ///`http://localhost:8092/sort?sort=${sort}`
     );
     const body = await response.json();
     return body;
@@ -130,7 +134,7 @@ const renderSearchProducts = products => {
       return `
       <div class="product" id=${product._id}>
         <span>${product.brand}</span>
-        <a href="${product.name}" target="_blank">}</a>
+        <a href="${product.link}" target="_blank">${product.name}</a>
         <span>${product.price}€</span>
         <span>${product.caracteristique}</span>
         <button onclick="changeFavorite('${product._id}')">${textFavorite(product._id)}</button>
@@ -148,7 +152,7 @@ const renderFavoriteProducts = products => {
       return `
       <div class="product" id=${product._id}>
         <span>${product.brand}</span>
-        <a href="${product.name}" target="_blank"></a>
+        <a href="${product.link}" target="_blank">${product.name}</a>
         <span>${product.price}€</span>
         <span>${product.caracteristique}</span>
         <button onclick="changeFavorite('${product._id}')">${textFavorite(product._id)}</button>
@@ -264,4 +268,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   for (let product_id in all_products) {
     prices.push(all_products[product_id].price);
   }
+  spanPercentile50.innerHTML = Math.round(quantile(prices, 0.50));
+  spanPercentile90.innerHTML = Math.round(quantile(prices, 0.90));
+  spanPercentile95.innerHTML = Math.round(quantile(prices, 0.95));
 });
