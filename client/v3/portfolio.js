@@ -33,7 +33,7 @@ const sectionFavoriteProducts = document.querySelector('#favoriteProducts');
 
 const fetchProducts = async (show=12, page=1, brand="",price="") => {
   try {
-    ///let url = `https://clear-fashion-ashen-six.vercel.app/products/search?show=${show}&page=${page}`;
+    //let url = 'https://vercel.com/lucaa21/clear-fashion-co93/BBUA82Q3NiWBZC7xoLsj7apQmrtr'
     let url = `http://localhost:8092/products/search?page=${page}&limit=${show}&brand=${brand}&price=${price}`;
     console.log(url);
     const response = await fetch(url);
@@ -58,7 +58,7 @@ const fetchProducts = async (show=12, page=1, brand="",price="") => {
 const fetchAllProducts = async () => {
   try {
     const response = await fetch(
-      `http://localhost:8092/products`
+      `http://localhost:8092/products/search`
     );
     const body = await response.json();
     return body;
@@ -84,7 +84,8 @@ const fetchBrands = async () => {
 const fetchSortProducts = async (sort=-1) => {
   try {
     const response = await fetch(
-      `http://localhost:8092/sort?sort=${sort}`
+      `https://clear-fashion-api-jaoudet.vercel.app/sort?sort=${sort}`
+      ///`http://localhost:8092/sort?sort=${sort}`
     );
     const body = await response.json();
     return body;
@@ -265,7 +266,4 @@ document.addEventListener('DOMContentLoaded', async () => {
   for (let product_id in all_products) {
     prices.push(all_products[product_id].price);
   }
-  spanPercentile50.innerHTML = Math.round(quantile(prices, 0.50));
-  spanPercentile90.innerHTML = Math.round(quantile(prices, 0.90));
-  spanPercentile95.innerHTML = Math.round(quantile(prices, 0.95));
 });
