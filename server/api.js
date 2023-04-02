@@ -29,6 +29,38 @@ app.get('/', (request, response) => {
   response.send({'ack': true});
 });
 
+app.get('/products/search', async (request, response) => {
+  try{
+    const client = getClient();
+    const collection = client.db("Cluster0").collection("general");
+    const brandName = request.query.brand;
+	  const priceRoof = request.query.price;
+	  var limPage = request.query.limit;
+
+    var script = {};
+
+    if (limPage == undefined) {
+      limPage = 12;
+    } else {
+      limPage = parseInt(limPage);
+    }
+    if (brandName !== undefined) {
+      script.brand = brandName;
+    }
+    if (priceRoof !== undefined) {
+      script.price = {$lte: parseInt(priceRoof)};
+    }
+    const found = await collection.find(script).toArray();
+    const metadata = {currentPage: 1,
+                      pageSize: limPage,
+                      pageCount: parseInt(found.length/limPage)}
+    response.send({result: found, meta: metadata});
+
+  } catch(err) {
+    response.send({error : "Unreachable information"});  
+  }
+});
+
 
 app.get('/brands', async (request, response) => {
   try{
